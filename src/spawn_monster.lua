@@ -4,7 +4,7 @@ Console.new{
         "Spawn an enemy(s) from a monster card at the current mouse position.",
         {"(card)",  "string", "The namespace-identifier of the monster card (e.g., <y>lemurian</c> or <y>ror-lemurian</c>)."},
         {"[count]", "number", "The number of instances to spawn. <y>1</c> by default."},
-        {"[elite]", "string", "The namespace-identifier of the elite type (e.g., <y>blazing</c> or <y>ror-blazing</c>)."},
+        {"[elite]", "string", "The namespace-identifier of the elite type (e.g., <y>blazing</c> or <y>ror-blazing</c>).\n*when spawning a <y>lemrider</c>, <y>lemriderA</c> and <y>lemriderB</c> can be used to spawn only the rider or the mount respectively."},
     },
     function(args)
         if not Util.bool(Global.__run_exists) then
