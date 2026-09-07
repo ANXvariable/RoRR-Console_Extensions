@@ -22,12 +22,28 @@ Console.new{
             Console.print("Enter a valid card.")
             return
         end
+        
+        local spawn
+        local lemrider_type
 
         local id, ns = nsid_split(args[1])
-        local card = MonsterCard.find(id, ns)
-        if not card then
-            Console.print("Card '"..args[1].."' not found.")
-            return
+        if id:sub(1, 8) == "lemrider" then
+            lemrider_type = id:sub(9, 9)
+            if lemrider_type == "A" then
+                spawn = gm.constants.oLizardRLG
+            else
+                id = id:sub(1, 8)
+            end
+        end
+        local card
+        if not spawn then
+            card = MonsterCard.find(id, ns)
+            if not card then
+                Console.print("Card '"..args[1].."' not found.")
+                return
+            else
+                spawn = card.object_id
+            end
         end
 
         local count = args[2]
@@ -53,7 +69,14 @@ Console.new{
 
         local x, y = Global.mouse_x, Global.mouse_y
         for i = 1, (count or 1) do
-            local inst = Instance.create(x, y, card.object_id)
+            local inst = Instance.create(x, y, spawn)
+            if lemrider_type == "" then
+                inst.lizardr_child = Instance.create(inst.x, inst.y, gm.constants.oLizardRL)
+                inst.lizardr_child.lizardr_parent = inst.value
+                if Net.host then
+                    gm.net_send_instance_message(121)
+                end
+            end
             if elite then GM.elite_set(inst, elite) end
         end
     end
